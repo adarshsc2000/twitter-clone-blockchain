@@ -1,4 +1,6 @@
+import { useContext } from 'react';
 import Post from '../Post';
+import { TwitterContext } from '../../context/TwitterContext';
 
 import { BsStars } from "react-icons/bs";
 import TweetBox from "./TweetBox";
@@ -8,52 +10,22 @@ const style = {
     header: `sticky top-0 bg-[#15202b] z-10 p-4 flex justify-between items-center`,
     headerTitle: `text-xl font-bold`,
 }
-
 interface Tweet  {
-    displayName: string;
-    userName: string;
-    avatar: string;
-    text: string;
-    isProfileImageNft: boolean;
+    author: TweetAuthor,
+    tweet: string;
     timestamp: string;
 }
 
-const tweets : Tweet[] = [
-    {
-        displayName: 'Adarsh',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Adarsh',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Adarsh',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Adarsh',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-]
+interface TweetAuthor {
+    name: string,
+    walletAddress: string,
+    profileImage: string,
+    isProfileImageNft: boolean
+}
 
 const Feed = () => {
+
+    const { tweets } = useContext(TwitterContext);
     
     return (
         <div className={style.wrapper}>
@@ -67,11 +39,14 @@ const Feed = () => {
                 tweets.map((tweet : Tweet, index : number) => (
                     <Post 
                         key={index}
-                        displayName={tweet.displayName}
-                        userName={`${tweet.userName.slice(0,4)}...${tweet.userName.slice(-4)}`}
-                        avatar={tweet.avatar}
-                        text={tweet.text}
-                        isProfileImageNft={tweet.isProfileImageNft}
+                        displayName={tweet.author.name === 'Unnamed' 
+                            ? `${tweet.author.walletAddress.slice(0,4)}...${tweet.author.walletAddress.slice(-4)}`
+                            : tweet.author.name
+                        }
+                        userName={`${tweet.author.walletAddress.slice(0,4)}...${tweet.author.walletAddress.slice(-4)}`}
+                        avatar={tweet.author.profileImage}
+                        text={tweet.tweet}
+                        isProfileImageNft={tweet.author.isProfileImageNft}
                         timestamp={tweet.timestamp}
                     />
                 ))

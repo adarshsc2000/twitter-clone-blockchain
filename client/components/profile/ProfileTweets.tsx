@@ -1,65 +1,45 @@
 import Post from "../Post";
+import { useContext } from "react";
+import { TwitterContext } from "../../context/TwitterContext";
 
 const style = {
     wrapper: `no-scrollbar`,
     header: `sticky top-0 bg-[#15202b] z-10 p-4 flex justify-between items-center`,
     headerTitle: `text-xl font-bold`,
   }
+
+  interface Tweet {
+    timestamp: string
+    tweet: string
+  }
   
-  const tweets = [
-    {
-        displayName: 'Qazi',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Qazi',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Qazi',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Qazi',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-    {
-        displayName: 'Qazi',
-        userName: '0x3219739428adfeb3242bf3434323099d',
-        avatar: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
-        text: 'gm',
-        isProfileImageNft: false,
-        timestamp: '2020-06-01T12:00:00.000Z', // this is how sanity stoes timestamps
-    },
-]
+  interface Tweets extends Array<Tweet> {}
+  
+  interface Author {
+    name: string
+    profileImage: string
+    walletAddress: string
+    isProfileImageNft: Boolean | undefined
+  }
 
 const ProfileTweets = () => {
+
+    const { currentAccount, currentUser } = useContext(TwitterContext);
+
   return (
     <div className={style.wrapper}>
-        {tweets?.map((tweet, index) => (
+        {currentUser.tweets?.map((tweet : Tweet, index : number) => (
             <Post 
                 key={index}
-                displayName={tweet.displayName}
-                userName={`${tweet.userName.slice(0,4)}...${tweet.userName.slice(-4)}`}
-                avatar={tweet.avatar}
-                text={tweet.text}
-                isProfileImageNft={tweet.isProfileImageNft}
+                displayName={
+                    currentUser.name == 'Unnamed' 
+                        ? `${currentUser.walletAddress.slice(0,4)}...${currentUser.walletAddress.slice(-4)}` 
+                        : currentUser.name
+                  }
+                userName={`${currentUser.walletAddress.slice(0,4)}...${currentUser.walletAddress.slice(-4)}`}
+                avatar={currentUser.profileImage}
+                text={tweet.tweet}
+                isProfileImageNft={currentUser.isProfileImageNft}
                 timestamp={tweet.timestamp}
             />
         ))}

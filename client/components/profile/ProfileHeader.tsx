@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { BsArrowLeftShort } from 'react-icons/bs'
+import { useContext } from 'react';
+import { TwitterContext } from '../../context/TwitterContext';
 
 const style = {
     wrapper: `border-[#38444d] border-b`,
@@ -22,8 +24,7 @@ const ProfileHeader = () => {
 
     const router = useRouter();
 
-    const isProfileImageNft : boolean = false;
-    const currentAccount : string = "0x3219739428adfeb3242bf3434323099d";
+    const { currentAccount, currentUser } = useContext(TwitterContext);
 
   return (
     <div className={style.wrapper}>
@@ -36,32 +37,33 @@ const ProfileHeader = () => {
             </div>
             <div className={style.details}>
                 <div className={style.primary}>
-                    Adarsh Chandran | Looking for Job
+                    {currentUser.name === 'Unnamed' ? currentUser.walletAddress : currentUser.name}
                 </div>
                 <div className={style.secondary}>
-                    4 Tweets
+                    {currentUser.tweets?.length} Tweets
                 </div>
             </div>
         </div>
         <div className={style.coverPhotoContainer}>
             <img 
-                src='https://www.teahub.io/photos/full/28-289473_twitter-cover-photo-45-stars.jpg' 
+                src={currentUser.coverImage} 
                 alt='Cover' 
                 className={style.coverPhoto}
             />
         </div>
         <div className={style.profileImageContainer}>
-            <div className={isProfileImageNft ? `hex` : style.profileImageContainer}>
+            <div className={currentUser.isProfileImageNft ? `hex` : style.profileImageContainer}>
                 <img 
-                    src='https://static.vecteezy.com/system/resources/thumbnails/000/550/731/small/user_icon_004.jpg'
+                    src={currentUser.profileImage}
                     alt='Profile Image'
-                    className={isProfileImageNft ? style.profileImageNft : style.profileImage}
+                    className={currentUser.isProfileImageNft ? style.profileImageNft : style.profileImage}
                 />
             </div>
         </div>
         <div className={style.details}>
             <div>
-                <div className={style.primary}>Adarsh Chandran</div>
+                <div className={style.primary}>                    {currentUser.name === 'Unnamed' ? currentUser.walletAddress : currentUser.name}
+</div>
             </div>
             <div className={style.secondary}>
                 {currentAccount && (

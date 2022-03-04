@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useContext } from 'react';
+import { useRouter } from 'next/router';
+import { TwitterContext } from '../context/TwitterContext';
 
 import SidebarOption from './SidebarOption';
 
@@ -34,6 +35,9 @@ interface SideBarProps {
 const Sidebar = ({ initialSelectedIcon = 'Home' } : SideBarProps) => {
 
     const [selected, setSelected] = useState<string>(initialSelectedIcon);
+    const { currentAccount, currentUser } = useContext(TwitterContext);
+    const router = useRouter();
+
     return (
         <div className={style.wrapper}>
             <div className={style.twitterIconContainer}>
@@ -89,14 +93,25 @@ const Sidebar = ({ initialSelectedIcon = 'Home' } : SideBarProps) => {
                     Icon= {CgMoreO}
                     setSelected={setSelected}
                 />
-               <div className={style.tweetButton}>Mint</div>
+                <div 
+                    onClick={()=> {router.push(`${router.pathname}/?mint=${currentAccount}}`)}}
+                    className={style.tweetButton}
+                >
+                        Mint
+                </div>
             </div>
             <div className={style.profileButton}>
-                <div className={style.profileLeft}></div>
+                <div className={style.profileLeft}>
+                    <img className={currentUser.isProfileImageNft ? `${style.profileImage} smallHex` : style.profileImage} 
+                        src={currentUser.profileImage} alt='profile' 
+                    />
+                </div>
                 <div className={style.profileRight}>
                     <div className={style.details}>
-                        <div className={style.name}>adarshsc2000</div>
-                        <div className={style.handle}>@0x22df...5xf2df</div>
+                        <div className={style.name}>{currentUser.name}</div>
+                        <div className={style.handle}>
+                            @{currentAccount.slice(0, 6)}...{currentAccount.slice(-6)}
+                        </div>
                     </div>
                     <div className={style.moreContainer}>
                         <FiMoreHorizontal />    
