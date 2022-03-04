@@ -21,7 +21,6 @@ const style = {
 }
 
 interface PostProps  {
-  key: number,
   displayName: string;
   userName: string;
   avatar: string;
@@ -31,7 +30,6 @@ interface PostProps  {
 }
 
 const Post = ({
-    key,
     displayName,
     userName,
     avatar,

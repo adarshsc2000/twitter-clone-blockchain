@@ -5,6 +5,8 @@ import { RiFileGifLine, RiBarChartHorizontalFill } from 'react-icons/ri'
 import { IoMdCalendar } from 'react-icons/io'
 import { MdOutlineLocationOn } from 'react-icons/md'
 
+
+
 const style = {
     wrapper: `px-4 flex flex-row border-b border-[#38444d] pb-4`,
     tweetBoxLeft: `mr-4`,

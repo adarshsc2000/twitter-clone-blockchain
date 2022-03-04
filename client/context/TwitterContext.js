@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { createContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { client } from '../lib/client';
 
 export const TwitterContext = createContext()
 
@@ -22,6 +23,7 @@ export const TwitterProvider = ({ children }) => {
       if (addressArray.length > 0) {
         setAppStatus('connected')
         setCurrentAccount(addressArray[0])
+        createUserAccount(addressArray[0])
       } else {
         router.push('/')
         setAppStatus('notConnected')
@@ -30,7 +32,6 @@ export const TwitterProvider = ({ children }) => {
       router.push('/');
       setAppStatus('error');
     }
-    console.log(appStatus);
   }
 
   // Initiates the Metamask Wallet Connection
@@ -44,14 +45,37 @@ export const TwitterProvider = ({ children }) => {
       })
 
       if (addressArray.length > 0) {
-        setCurrentAccount(addressArray[0]);
         setAppStatus('connected');
+        setCurrentAccount(addressArray[0]);
+        createUserAccount(addressArray[0]);
       } else {
         router.push('/');
         setAppStatus('notConnected');
       }
     } catch (error) {
       setAppStatus('error')
+    }
+  }
+
+  const createUserAccount = async (userWalletAddress = currentAccount) => {
+    if (!window.ethereum) return setAppStatus('noMetaMask');
+    try {
+      const userDoc = {
+        _type: 'users',
+        _id: userWalletAddress,
+        name: 'Unnamed',
+        isProfileImageNft: false,
+        profileImage: 'https://cloudfront-us-east-2.images.arcpublishing.com/reuters/43YAWLITTZJLZIQTCP2JSS4KSM.jpg',
+        walletAddress: userWalletAddress,
+      }
+    
+      await client.createIfNotExists(userDoc);
+
+
+    } catch (error) {
+      router.push('/');
+      setAppStatus('error');
+      console.log(error);
     }
   }
 
