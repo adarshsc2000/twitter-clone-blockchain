@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Sidebar.tsx", "components/SidebarOption.tsx", "pages/index.tsx", "pages/_app.tsx", "lib/static.js", "pages/profile.tsx", "context/TwitterContext.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/Sidebar.tsx", "components/SidebarOption.tsx", "pages/index.tsx", "pages/_app.tsx", "lib/static.js", "pages/profile.tsx", "context/TwitterContext.js", "lib/pinata.js"],
   "exclude": ["node_modules"]
 }

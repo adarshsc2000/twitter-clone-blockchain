@@ -2,7 +2,9 @@ import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { TwitterContext } from '../context/TwitterContext';
 
+import ProfileImageMinter from './mintingModal/ProfileImageMinter';
 import SidebarOption from './SidebarOption';
+import { customStyles } from '../lib/constants'
 
 import { VscTwitter } from 'react-icons/vsc';
 import { FiMoreHorizontal, FiBell } from 'react-icons/fi';
@@ -12,6 +14,8 @@ import { HiOutlineMail, HiMail } from 'react-icons/hi';
 import { FaRegListAlt, FaHashtag, FaBell } from 'react-icons/fa';
 import { BsBookmark, BsBookmarkFill, BsPerson, BsPersonFill } from 'react-icons/bs'
 import { CgMoreO } from 'react-icons/cg';
+
+import Modal from 'react-modal';
 
 const style = {
     wrapper: `flex-[0.7] px-8 flex flex-col`,
@@ -94,7 +98,7 @@ const Sidebar = ({ initialSelectedIcon = 'Home' } : SideBarProps) => {
                     setSelected={setSelected}
                 />
                 <div 
-                    onClick={()=> {router.push(`${router.pathname}/?mint=${currentAccount}}`)}}
+                    onClick={()=> router.push(`${router.pathname}?mint=${currentAccount}`)}
                     className={style.tweetButton}
                 >
                         Mint
@@ -117,8 +121,16 @@ const Sidebar = ({ initialSelectedIcon = 'Home' } : SideBarProps) => {
                         <FiMoreHorizontal />    
                     </div>
                 </div>
-
             </div>
+
+            <Modal
+                isOpen={Boolean(router.query.mint)}
+                onRequestClose={() => router.back()}
+                style={customStyles}
+                ariaHideApp={false}
+            >
+                <ProfileImageMinter />
+            </Modal>
         </div>
     );
 };

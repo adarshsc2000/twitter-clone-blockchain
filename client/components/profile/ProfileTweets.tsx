@@ -24,7 +24,7 @@ const style = {
 
 const ProfileTweets = () => {
 
-    const { currentAccount, currentUser } = useContext(TwitterContext);
+    const { currentUser } = useContext(TwitterContext);
 
   return (
     <div className={style.wrapper}>
